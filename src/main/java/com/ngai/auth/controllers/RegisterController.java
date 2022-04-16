@@ -9,10 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/user")
@@ -31,6 +28,14 @@ public class RegisterController {
         LOG.info("received registration request from: {}", registerRequestDto.getName());
 
         ApiResponse response = Utility.buildApiResponse(registrationService, registrationService.register(registerRequestDto));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/refresh/{refreshToken}")
+    public ResponseEntity<ApiResponse> refresh(@PathVariable(value = "refreshToken") String refreshToken) {
+        LOG.info("received refresh token request: {}", refreshToken);
+
+        ApiResponse response = Utility.buildApiResponse(registrationService, registrationService.refreshToken(refreshToken));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

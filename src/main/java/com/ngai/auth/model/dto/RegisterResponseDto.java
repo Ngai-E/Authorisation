@@ -6,5 +6,6 @@ import lombok.Data;
 public class RegisterResponseDto {
     private String name;
     private String tel;
+    private String username;
     private String isFreeTrial;
 }

@@ -25,4 +25,8 @@ public class Utility {
                 .message(Parameters.SERVER_ERROR)
                 .build();
     }
+
+    public static boolean isNullOrEmpty(String data) {
+        return data == null || data.isEmpty();
+    }
 }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+
+    <!-- Logging Properties -->
+    <Properties>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %p %m%n</Property>
+        <Property name="APP_LOG_ROOT">../LOGS</Property>
+    </Properties>
+
+    <Appenders>
+
+        <!-- Console Appender -->
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+
+        <!-- File Appenders on need basis -->
+        <RollingFile name="authservice" fileName="${APP_LOG_ROOT}/auth.log"
+                     filePattern="${APP_LOG_ROOT}/auth-%d{yyyy-MM-dd}-%i.log">
+            <LevelRangeFilter minLevel="ERROR" maxLevel="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+
+    </Appenders>
+
+    <Loggers>
+
+        <Logger name="com.ngai.auth" additivity="false" level="info">
+            <AppenderRef ref="authservice" />
+            <AppenderRef ref="Console" />
+        </Logger>
+
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+        </Root>
+
+    </Loggers>
+
+</Configuration>

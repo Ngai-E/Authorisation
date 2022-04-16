@@ -5,8 +5,9 @@ import lombok.Data;
 @Data
 public class RegisterRequestDto {
     private String name;
+    private String username;
     private String pwd;
     private String tel;
-    private String refCode;
+    private String referralCode;
     private boolean isFreeTrial;
 }

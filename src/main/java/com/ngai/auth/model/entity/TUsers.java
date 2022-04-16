@@ -9,8 +9,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -29,7 +27,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TUsers.findByName", query = "SELECT t FROM TUsers t WHERE t.name = :name"),
     @NamedQuery(name = "TUsers.findByUsername", query = "SELECT t FROM TUsers t WHERE t.username = :username"),
     @NamedQuery(name = "TUsers.findByPhone", query = "SELECT t FROM TUsers t WHERE t.phone = :phone"),
-    @NamedQuery(name = "TUsers.findByPassword", query = "SELECT t FROM TUsers t WHERE t.password = :password")})
+    @NamedQuery(name = "TUsers.findByPassword", query = "SELECT t FROM TUsers t WHERE t.password = :password"),
+    @NamedQuery(name = "TUsers.findByStatus", query = "SELECT t FROM TUsers t WHERE t.status = :status")})
 public class TUsers implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,9 +45,8 @@ public class TUsers implements Serializable {
     private String phone;
     @Column(name = "password")
     private String password;
-    @JoinColumn(name = "status", referencedColumnName = "lg_status")
-    @ManyToOne
-    private TUserStatus status;
+    @Column(name = "status")
+    private String status;
 
     public TUsers() {
     }
@@ -102,11 +100,11 @@ public class TUsers implements Serializable {
         this.password = password;
     }
 
-    public TUserStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(TUserStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
