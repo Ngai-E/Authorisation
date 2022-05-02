@@ -5,6 +5,7 @@
 package com.ngai.auth.model.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -30,6 +33,13 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TUsers.findByPassword", query = "SELECT t FROM TUsers t WHERE t.password = :password"),
     @NamedQuery(name = "TUsers.findByStatus", query = "SELECT t FROM TUsers t WHERE t.status = :status")})
 public class TUsers implements Serializable {
+
+    @Column(name = "dt_created")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dtCreated;
+    @Column(name = "dt_updated")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dtUpdated;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -131,6 +141,22 @@ public class TUsers implements Serializable {
     @Override
     public String toString() {
         return "com.ngai.auth.model.entity.TUsers[ userId=" + userId + " ]";
+    }
+
+    public Date getDtCreated() {
+        return dtCreated;
+    }
+
+    public void setDtCreated(Date dtCreated) {
+        this.dtCreated = dtCreated;
+    }
+
+    public Date getDtUpdated() {
+        return dtUpdated;
+    }
+
+    public void setDtUpdated(Date dtUpdated) {
+        this.dtUpdated = dtUpdated;
     }
     
 }

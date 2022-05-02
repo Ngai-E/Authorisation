@@ -1,5 +1,6 @@
 package com.ngai.auth.security;
 
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,13 +13,25 @@ public class User implements UserDetails {
     private String name;
     private String tel;
     private boolean isEnabled;
+    private String userId;
 
     private List<GrantedAuthority> authorities;
+
+    public User() {
+    }
 
     public User(String username, String password, List<GrantedAuthority> authorities) {
         this.username = username;
         this.password = password;
         this.authorities = authorities;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public void setEnabled(boolean enabled) {

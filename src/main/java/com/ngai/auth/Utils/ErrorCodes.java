@@ -6,4 +6,5 @@ public class ErrorCodes {
     public static final String INVALID_SIGNATURE = "0002";
     public static final String UNKNOWN_USER = "0003";
     public static final String USERNAME_PASSWORD_WRONG = "0004";
+    public static final String UNAUTHORIZED = "0005";
 }

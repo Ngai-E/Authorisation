@@ -6,6 +6,7 @@
     <class>com.ngai.auth.model.entity.TUsers</class>
     <class>com.ngai.auth.model.entity.TUserStatus</class>
     <class>com.ngai.auth.model.entity.TToken</class>
+    <class>com.ngai.auth.model.entity.TCountryCodes</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/security_db?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
