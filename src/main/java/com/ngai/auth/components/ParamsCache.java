@@ -1,4 +1,4 @@
-package com.ngai.auth.Utils;
+package com.ngai.auth.components;
 
 import com.ngai.auth.model.entity.TParamters;
 import com.ngai.auth.model.repository.TParametersRepository;

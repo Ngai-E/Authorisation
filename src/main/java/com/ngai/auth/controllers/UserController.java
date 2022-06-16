@@ -2,7 +2,6 @@ package com.ngai.auth.controllers;
 
 import com.ngai.auth.Utils.Utility;
 import com.ngai.auth.model.dto.ApiResponse;
-import com.ngai.auth.model.dto.LoginRequestDto;
 import com.ngai.auth.model.dto.RegisterRequestDto;
 import com.ngai.auth.security.User;
 import com.ngai.auth.services.custom.ApiException;

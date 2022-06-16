@@ -8,6 +8,7 @@ public class Parameters {
     public static final String COUNTRY_N0T_SUPPORTED = "Country not supported";
     public static final String REGISTRATION_SUCCESSFUL = "REGISTRATION SUCCESSFUL";
     public static final String INVALID_CREDENTIALS = "Invalid Credentials";
+    public static final String INVALID_USER = "No account registered with this user";
     public static final String SUCCESS = "SUCCESS";
 
     public enum USER_STATUS {
@@ -18,4 +19,9 @@ public class Parameters {
     //db params JWT
     public static final String PARAM_JWT_TOKEN_EXPIRATION_TIME = "JWT_TOKEN_EXPIRATION_TIME";
     public static final String PARAM_JWT_ENCRYPTION_KEY = "JWT_ENCRYPTION_KEY";
+    public static final String PARAM_AUTHORIZATION_HEADER = "Content-Signature";
+    public static final String PARAM_AUTH_SEPARATOR = ":";
+    public static final String PARAM_SEPARATOR_AND = "&";
+    public static final String PARAM_SEPARATOR_QUESTION = "?";
+    public static final String PARAM_HMAC_ALGORITHM = "HmacSHA256";
 }

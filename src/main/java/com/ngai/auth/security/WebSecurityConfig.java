@@ -1,9 +1,8 @@
-package com.ngai.auth.security;
+    package com.ngai.auth.security;
 
-import com.ngai.auth.model.repository.TTokenRepository;
+import com.ngai.auth.model.repository.ITClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -11,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -19,6 +17,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     BCryptPasswordEncoder passwordEncoder;
     @Autowired
     UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    ITClientRepository clientRepository;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -26,7 +26,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/configuration/ui",
                 "/swagger-resources/**",
                 "/configuration/security",
-//                "/v1/user/**",
                 "/swagger-ui.html",
                 "/webjars/**");
     }
@@ -39,8 +38,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/user/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilter(new JWTAuthenticationVerficationFilter(authenticationManager()))
-                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+                .addFilterBefore(new BasicHeaderFilter(authenticationManager(), clientRepository), UsernamePasswordAuthenticationFilter.class)
+                .addFilter(new LoginFilter(authenticationManager()))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 

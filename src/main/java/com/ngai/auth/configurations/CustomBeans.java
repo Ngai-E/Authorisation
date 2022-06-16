@@ -1,6 +1,6 @@
 package com.ngai.auth.configurations;
 
-import com.ngai.auth.Utils.ParamsCache;
+import com.ngai.auth.components.ParamsCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

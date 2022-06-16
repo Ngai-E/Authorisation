@@ -5,8 +5,9 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.ngai.auth.Utils.Parameters;
-import com.ngai.auth.Utils.ParamsCache;
+import com.ngai.auth.components.ParamsCache;
 import com.ngai.auth.Utils.Utility;
+import static com.ngai.auth.Utils.Utility.objectMapper;
 import com.ngai.auth.model.dto.ApiResponse;
 import com.ngai.auth.model.dto.LoginResponseDto;
 import com.ngai.auth.model.entity.TToken;
@@ -28,29 +29,32 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
-import java.util.UUID;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public LoginFilter(AuthenticationManager authenticationManager) {
         this.setFilterProcessesUrl("/v1/user/login");
+        this.setAuthenticationFailureHandler((request, response, failed) -> {
+            this.unsuccessfulAuthentication(request, response, failed);
+        });
         this.authenticationManager = authenticationManager;
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
-            User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
+            User user = objectMapper.readValue(request.getInputStream(), User.class);
             return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
 
-        } catch (BadCredentialsException ex) {
-            ex.printStackTrace();
-            throw new ApiException(Parameters.INVALID_CREDENTIALS, HttpStatus.UNAUTHORIZED);
+        } catch (UsernameNotFoundException ex) {
+            throw new AuthException(Parameters.INVALID_USER, ex);
+        }
+        catch (BadCredentialsException ex) {
+            throw new AuthException(Parameters.INVALID_CREDENTIALS, ex);
         } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new ApiException(Parameters.SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new AuthException(Parameters.SERVER_ERROR, ex);
         }
     }
 
@@ -64,7 +68,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         ApiResponse apiResponse = ApiResponse.builder()
                 .errorCode(HttpStatus.UNAUTHORIZED.value() +"")
-                .message(Parameters.INVALID_CREDENTIALS)
+                .message(failed.getMessage())
                 .build();
 
         response.getWriter().write(Utility.objectMapper.writeValueAsString(apiResponse));

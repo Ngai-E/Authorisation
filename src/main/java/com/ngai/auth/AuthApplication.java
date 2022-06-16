@@ -1,6 +1,5 @@
 package com.ngai.auth;
 
-import com.ngai.auth.Utils.ParamsCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

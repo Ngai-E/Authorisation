@@ -1,5 +1,6 @@
 package com.ngai.auth.Utils;
 
+import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -14,6 +15,7 @@ public class Utility {
         objectMapper = new ObjectMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+        objectMapper.configure(Feature.AUTO_CLOSE_SOURCE, true);
     }
 
     public static ApiResponse buildApiResponse(Messaging messaging, Object data) {
@@ -39,4 +41,6 @@ public class Utility {
     public static boolean isNullOrEmpty(String data) {
         return data == null || data.isEmpty();
     }
+    
+    
 }

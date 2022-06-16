@@ -5,7 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ngai.auth.Utils.ErrorCodes;
 import com.ngai.auth.Utils.Parameters;
-import com.ngai.auth.Utils.ParamsCache;
+import com.ngai.auth.components.ParamsCache;
 import com.ngai.auth.Utils.Utility;
 import com.ngai.auth.model.dto.LoginRequestDto;
 import com.ngai.auth.model.dto.LoginResponseDto;
