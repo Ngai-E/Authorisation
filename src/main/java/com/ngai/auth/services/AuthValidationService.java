@@ -4,17 +4,24 @@
  */
 package com.ngai.auth.services;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.common.io.BaseEncoding;
 import com.ngai.auth.Utils.Parameters;
 import com.ngai.auth.Utils.Utility;
+import com.ngai.auth.components.ParamsCache;
 import com.ngai.auth.model.entity.TClient;
 import com.ngai.auth.model.repository.ITClientRepository;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Optional;
 import org.apache.commons.codec.digest.HmacUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,10 +33,12 @@ public class AuthValidationService {
 
     private static final Logger LOG = LogManager.getLogger(AuthValidationService.class);
     private final ITClientRepository clientRepository;
-
+    private final BCryptPasswordEncoder passwordEncoder;
+    
     @Autowired
-    public AuthValidationService(ITClientRepository clientRepository) {
+    public AuthValidationService(ITClientRepository clientRepository, BCryptPasswordEncoder passwordEncoder) {
         this.clientRepository = clientRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public boolean isValidSignature(String signedHeaderValue, String content) throws IOException {
@@ -57,6 +66,19 @@ public class AuthValidationService {
     public String validateToken(String token) {
         String error = "";
         
+        if (Utility.isNullOrEmpty(token)) return "Invalid token";
+        String jwtKey = (String) ParamsCache.getParam(Parameters.PARAM_JWT_ENCRYPTION_KEY);
+
+        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(passwordEncoder.encode(jwtKey)))
+                .build()
+                .verify(token);
+
+        if (decodedJWT == null) return "Invalid token";
+        
+        String userNameFromJwt = decodedJWT.getSubject();
+
+        if (userNameFromJwt == null) return "Invalid user";
+
         return error;
     }
 }
