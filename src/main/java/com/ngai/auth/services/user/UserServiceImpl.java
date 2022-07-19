@@ -60,6 +60,7 @@ public class UserServiceImpl extends Messaging implements IUserService {
         tUser.setPhone(registerRequestDto.getCountryCode().concat(registerRequestDto.getTel()));
         tUser.setStatus(Parameters.USER_STATUS.active.name());
         tUser.setUsername(registerRequestDto.getUsername());
+        tUser.setRefCode(registerRequestDto.getRefCode());
         tUser.setDtCreated(new Date());
 
         tUser = tUsersRespository.save(tUser);
@@ -83,7 +84,7 @@ public class UserServiceImpl extends Messaging implements IUserService {
 
     @Override
     public LoginResponseDto login(User user) {
-        Date timeToExpire = new Date(System.currentTimeMillis() + Integer.parseInt((String) ParamsCache.getParam(Parameters.PARAM_JWT_TOKEN_EXPIRATION_TIME)));
+        Date timeToExpire = new Date(System.currentTimeMillis() + Long.parseLong((String) ParamsCache.getParam(Parameters.PARAM_JWT_TOKEN_EXPIRATION_TIME)));
         String jwtKey = (String) ParamsCache.getParam(Parameters.PARAM_JWT_ENCRYPTION_KEY);
 
         String token = JWT.create()
@@ -97,7 +98,7 @@ public class UserServiceImpl extends Messaging implements IUserService {
         LoginResponseDto loginResponseDto =LoginResponseDto.builder()
                 .accessToken(token)
                 .name(user.getName())
-                .timeToExpire(Integer.parseInt((String) ParamsCache.getParam(Parameters.PARAM_JWT_TOKEN_EXPIRATION_TIME)) / 1000)
+                .timeToExpire(Long.parseLong((String) ParamsCache.getParam(Parameters.PARAM_JWT_TOKEN_EXPIRATION_TIME)) / 1000)
                 .tel(user.getTel())
                 .refreshToken(refreshToken)
                 .username(user.getUsername())

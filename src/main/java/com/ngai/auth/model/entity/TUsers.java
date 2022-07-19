@@ -31,15 +31,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TUsers.findByUsername", query = "SELECT t FROM TUsers t WHERE t.username = :username"),
     @NamedQuery(name = "TUsers.findByPhone", query = "SELECT t FROM TUsers t WHERE t.phone = :phone"),
     @NamedQuery(name = "TUsers.findByPassword", query = "SELECT t FROM TUsers t WHERE t.password = :password"),
-    @NamedQuery(name = "TUsers.findByStatus", query = "SELECT t FROM TUsers t WHERE t.status = :status")})
+    @NamedQuery(name = "TUsers.findByRefCode", query = "SELECT t FROM TUsers t WHERE t.refCode = :refCode"),
+    @NamedQuery(name = "TUsers.findByStatus", query = "SELECT t FROM TUsers t WHERE t.status = :status"),
+    @NamedQuery(name = "TUsers.findByDtCreated", query = "SELECT t FROM TUsers t WHERE t.dtCreated = :dtCreated"),
+    @NamedQuery(name = "TUsers.findByDtUpdated", query = "SELECT t FROM TUsers t WHERE t.dtUpdated = :dtUpdated")})
 public class TUsers implements Serializable {
-
-    @Column(name = "dt_created")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dtCreated;
-    @Column(name = "dt_updated")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dtUpdated;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -55,8 +51,16 @@ public class TUsers implements Serializable {
     private String phone;
     @Column(name = "password")
     private String password;
+    @Column(name = "ref_code")
+    private String refCode;
     @Column(name = "status")
     private String status;
+    @Column(name = "dt_created")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dtCreated;
+    @Column(name = "dt_updated")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dtUpdated;
 
     public TUsers() {
     }
@@ -110,12 +114,36 @@ public class TUsers implements Serializable {
         this.password = password;
     }
 
+    public String getRefCode() {
+        return refCode;
+    }
+
+    public void setRefCode(String refCode) {
+        this.refCode = refCode;
+    }
+
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Date getDtCreated() {
+        return dtCreated;
+    }
+
+    public void setDtCreated(Date dtCreated) {
+        this.dtCreated = dtCreated;
+    }
+
+    public Date getDtUpdated() {
+        return dtUpdated;
+    }
+
+    public void setDtUpdated(Date dtUpdated) {
+        this.dtUpdated = dtUpdated;
     }
 
     @Override
@@ -141,22 +169,6 @@ public class TUsers implements Serializable {
     @Override
     public String toString() {
         return "com.ngai.auth.model.entity.TUsers[ userId=" + userId + " ]";
-    }
-
-    public Date getDtCreated() {
-        return dtCreated;
-    }
-
-    public void setDtCreated(Date dtCreated) {
-        this.dtCreated = dtCreated;
-    }
-
-    public Date getDtUpdated() {
-        return dtUpdated;
-    }
-
-    public void setDtUpdated(Date dtUpdated) {
-        this.dtUpdated = dtUpdated;
     }
     
 }

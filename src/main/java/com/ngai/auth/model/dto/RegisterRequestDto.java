@@ -9,4 +9,5 @@ public class RegisterRequestDto {
     private String pwd;
     private String tel;
     private String countryCode;
+    private String refCode;
 }
