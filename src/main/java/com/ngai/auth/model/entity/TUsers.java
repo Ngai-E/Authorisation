@@ -53,6 +53,8 @@ public class TUsers implements Serializable {
     private String password;
     @Column(name = "ref_code")
     private String refCode;
+    @Column(name = "str_referred_by")
+    private String strReferredBy;
     @Column(name = "status")
     private String status;
     @Column(name = "dt_created")
@@ -144,6 +146,14 @@ public class TUsers implements Serializable {
 
     public void setDtUpdated(Date dtUpdated) {
         this.dtUpdated = dtUpdated;
+    }
+
+    public String getStrReferredBy() {
+        return strReferredBy;
+    }
+
+    public void setStrReferredBy(String strReferredBy) {
+        this.strReferredBy = strReferredBy;
     }
 
     @Override

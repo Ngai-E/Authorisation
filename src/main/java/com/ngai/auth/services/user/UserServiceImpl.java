@@ -60,7 +60,8 @@ public class UserServiceImpl extends Messaging implements IUserService {
         tUser.setPhone(registerRequestDto.getCountryCode().concat(registerRequestDto.getTel()));
         tUser.setStatus(Parameters.USER_STATUS.active.name());
         tUser.setUsername(registerRequestDto.getUsername());
-        tUser.setRefCode(registerRequestDto.getRefCode());
+        tUser.setRefCode(generateReferralCode(registerRequestDto.getUsername()));
+        tUser.setStrReferredBy(registerRequestDto.getReferral());
         tUser.setDtCreated(new Date());
 
         tUser = tUsersRespository.save(tUser);
@@ -117,5 +118,10 @@ public class UserServiceImpl extends Messaging implements IUserService {
         ttoken.setStrRefresh(refreshToken);
 
         tokenRepository.save(ttoken);
+    }
+
+    private String generateReferralCode(String username) {
+        return "PG".concat(username);
+
     }
 }
