@@ -89,7 +89,9 @@ public class UserServiceImpl extends Messaging implements IUserService {
         String jwtKey = (String) ParamsCache.getParam(Parameters.PARAM_JWT_ENCRYPTION_KEY);
 
         String token = JWT.create()
-                .withSubject(user.getUsername())
+                .withSubject(user.getUserId())
+                .withClaim("username", user.getUsername())
+                .withClaim("name", user.getName())
                 .withExpiresAt(timeToExpire)
                 .sign(Algorithm.HMAC256(passwordEncoder.encode(jwtKey)));
 
