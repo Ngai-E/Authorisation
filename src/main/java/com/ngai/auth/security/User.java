@@ -1,6 +1,5 @@
 package com.ngai.auth.security;
 
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,6 +13,8 @@ public class User implements UserDetails {
     private String tel;
     private boolean isEnabled;
     private String userId;
+    private String refCode;
+    private String Referer;
 
     private List<GrantedAuthority> authorities;
 
@@ -52,6 +53,22 @@ public class User implements UserDetails {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getRefCode() {
+        return refCode;
+    }
+
+    public void setRefCode(String refCode) {
+        this.refCode = refCode;
+    }
+
+    public String getReferer() {
+        return Referer;
+    }
+
+    public void setReferer(String referer) {
+        Referer = referer;
     }
 
     @Override

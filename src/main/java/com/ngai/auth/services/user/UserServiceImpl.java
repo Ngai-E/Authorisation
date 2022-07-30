@@ -89,11 +89,13 @@ public class UserServiceImpl extends Messaging implements IUserService {
         String jwtKey = (String) ParamsCache.getParam(Parameters.PARAM_JWT_ENCRYPTION_KEY);
 
         String token = JWT.create()
+                .withIssuer("auth0")
                 .withSubject(user.getUserId())
                 .withClaim("username", user.getUsername())
                 .withClaim("name", user.getName())
                 .withExpiresAt(timeToExpire)
-                .sign(Algorithm.HMAC256(passwordEncoder.encode(jwtKey)));
+                .sign(Algorithm.HMAC256(jwtKey));
+//                .sign(Algorithm.HMAC256(passwordEncoder.encode(jwtKey)));
 
         String refreshToken = UUID.randomUUID().toString();
         saveRefreshToken(user, refreshToken);
@@ -105,6 +107,9 @@ public class UserServiceImpl extends Messaging implements IUserService {
                 .tel(user.getTel())
                 .refreshToken(refreshToken)
                 .username(user.getUsername())
+                .userId(user.getUserId())
+                .refCode(user.getRefCode())
+                .refferer(user.getReferer())
                 .build();
 
         setMessage(Parameters.SUCCESS);

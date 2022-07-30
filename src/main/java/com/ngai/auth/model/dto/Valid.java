@@ -4,10 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.json.JSONObject;
 
+@Data
 @AllArgsConstructor
 public class Valid {
     private boolean valid;
     private String msg;
     private String user;
-    private String data;
+    private Object data;
 }

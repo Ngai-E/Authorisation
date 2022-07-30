@@ -4,6 +4,7 @@
  */
 package com.ngai.auth.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ngai.auth.Utils.Utility;
 import com.ngai.auth.model.dto.ContentSignatureValidation;
 import com.ngai.auth.model.dto.SecurityValidationDto;
@@ -54,7 +55,8 @@ public class ValidationController {
         
         if (!Utility.isNullOrEmpty(token)) {
             String error = authValidationService.validateToken(token);
-            result.setTokenVerification(new Valid(Utility.isNullOrEmpty(error), error, authValidationService.getUserId(), authValidationService.getData()));
+            result.setTokenVerification(new Valid(Utility.isNullOrEmpty(error), error, authValidationService.getUserId(),
+                    new ObjectMapper().writeValueAsString(authValidationService.getData())));
         }
         
         return result;

@@ -12,5 +12,8 @@ public class LoginResponseDto {
     private String accessToken;
     private long timeToExpire;
     private String tel;
+    private String userId;
+    private String refCode;
+    private String refferer;
 
 }

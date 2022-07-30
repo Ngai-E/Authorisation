@@ -13,7 +13,7 @@ class AuthValidationServiceTest {
 
     @Test
     public void testTokenVerification() {
-        authValidationService.validateToken("ewrqe89qdfa5ao:afafiahfafnlafladf:fafdsfosdfhsdfos");
+        authValidationService.validateToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwOGU5NjQyYS1lNDU2LTQ4Y2MtYjhjMi03YjdlZWM1NDQxNTYiLCJpc3MiOiJhdXRoMCIsIm5hbWUiOiJoZWxlbiIsImV4cCI6MTY2MTcwMjEzMCwidXNlcm5hbWUiOiJFbGluZ2FpIn0.nve2PDCFvymzSOdJ_mtYKgBOjxMeVcF-yZ9rOzvA6K0");
 
     }
 }

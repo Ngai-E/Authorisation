@@ -28,6 +28,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         user.setName(optUser.get(0).getName());
         user.setTel(optUser.get(0).getPhone());
         user.setUserId(optUser.get(0).getUserId());
+        user.setRefCode(optUser.get(0).getRefCode());
+        user.setReferer(optUser.get(0).getStrReferredBy());
         return user;
     }
 }

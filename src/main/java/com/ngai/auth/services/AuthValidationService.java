@@ -7,6 +7,7 @@ package com.ngai.auth.services;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.common.io.BaseEncoding;
 import com.ngai.auth.Utils.Parameters;
@@ -40,7 +41,7 @@ public class AuthValidationService {
 
 
     private String userId;
-    private String data;
+    private Map<String, Claim> data;
     
     @Autowired
     public AuthValidationService(ITClientRepository clientRepository, BCryptPasswordEncoder passwordEncoder) {
@@ -78,7 +79,9 @@ public class AuthValidationService {
 
         DecodedJWT decodedJWT = null;
         try {
-            decodedJWT = JWT.require(Algorithm.HMAC512(passwordEncoder.encode(jwtKey)))
+            decodedJWT = JWT.require(Algorithm.HMAC256(jwtKey))
+//            decodedJWT = JWT.require(Algorithm.HMAC256(passwordEncoder.encode(jwtKey)))
+                    .withIssuer("auth0")
                     .build()
                     .verify(token);
 
@@ -89,7 +92,7 @@ public class AuthValidationService {
             if (userNameFromJwt == null) return "Invalid user";
 
             this.userId = userNameFromJwt;
-            this.data = decodedJWT.getPayload();
+            this.data = decodedJWT.getClaims();
 
             return error;
         } catch (JWTVerificationException e) {
@@ -111,11 +114,11 @@ public class AuthValidationService {
         this.userId = userId;
     }
 
-    public String getData() {
+    public Map<String, Claim> getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(Map<String, Claim> data) {
         this.data = data;
     }
 }
