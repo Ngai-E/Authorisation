@@ -47,9 +47,10 @@ pipeline  {
       steps {
 
                                     sh 'chmod +x deploy.sh'
-                                    sshagent(credentials: [serverCredential]) {
                                     sh './deploy.sh prod ${version} ${registry}'
-                                     }
+                                   // sshagent(credentials: [serverCredential]) {
+                                    
+                                   //  }
        }
       }
       }
