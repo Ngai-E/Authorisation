@@ -33,7 +33,7 @@ pipeline  {
          stage('containerise') {
              steps {
            script  {
-                        app = docker.build("authentication-service:${version}")
+                        app = docker.build("ngaie/authentication-service:${version}")
 						docker.withRegistry(registryUrl,registryCredential) {
                         pushOut =  app.push()
 					}
