@@ -26,7 +26,7 @@ pipeline  {
                       }
                   }
       steps {
-           sh "mvn clean install -s settings.xml -DskipTests"
+           sh "mvn clean install -DskipTests"
           }
 
        }
