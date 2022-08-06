@@ -34,7 +34,7 @@ pipeline  {
              steps {
            script  {
                         app = docker.build("ngaie/authentication-service:${version}")
-						docker.withRegistry(registryUrl,registryCredential) {
+						docker.withRegistry(registryUrl, registryCredential) {
                         pushOut =  app.push()
 					}
                }
