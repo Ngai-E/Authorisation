@@ -22,7 +22,7 @@ pipeline  {
                            * of maven directly on the agent
                            */
                           reuseNode true
-                          image 'maven:3.6.3-jdk-8'
+                          image 'maven:3.8.6-jdk-11'
                       }
                   }
       steps {
