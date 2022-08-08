@@ -1,58 +1,70 @@
 pipeline  {
-  environment {
-        //  registry = "index.docker.io"
-          registryCredential = 'dockerhub'
-         registryUrl = 'https://index.docker.io/v2/'
+environment {
+        version ="${env.BUILD_ID}-${env.GIT_COMMIT}"
+}
 
-           dockerImage = ''
-           serverCredential = 'ssh_stage'
+agent any
+  stages {
 
-           version ="${env.BUILD_ID}-${env.GIT_COMMIT}"
-  }
+    stage('reading properties from properties file') {
+        steps {
+            script {
+                def props = readProperties file: '/var/jenkins_home/workspace/creds/creds.properties' 
+                
+                env.registryCredential = props.registryCredential
+                env.registryUrl = props.registryUrl
+                env.NETWORK = props.NETWORK
+                env.authDockerImage = props.authDockerImage
+                env.authServiceContainerName  = props.authServiceContainerName 
+                env.eurekaHostZone = props.eurekaHostZone
+                env.MYSQL_URL = props.MYSQL_URL
+                env.MYSQL_USER = props.MYSQL_USER
+                env.MYSQL_PASS = props.MYSQL_PASS
+                env.configServerUrl = props.configServerUrl
+            }
+        }
+    }
 
-  agent any
-   stages {
-
-      stage('build') {
-       agent {
-                      docker {
-                          /*
-                           * Reuse the workspace on the agent defined at top-level of Pipeline but run inside a container.
-                           * In this case we are running a container with maven so we don't have to install specific versions
-                           * of maven directly on the agent
-                           */
-                          reuseNode true
-                          image 'maven:3.8.6-jdk-11'
-                      }
-                  }
+    stage('build') {
+      agent {
+            docker {
+                reuseNode true
+                image 'maven:3.8.6-jdk-11'
+            }
+      }
       steps {
-           sh "mvn clean install -DskipTests"
-          }
+          sh "mvn clean install -DskipTests"
+      }
 
-       }
-         stage('containerise') {
-             steps {
-           script  {
-                        app = docker.build("ngaie/authentication-service:${version}")
-						docker.withRegistry(registryUrl, registryCredential) {
-                        pushOut =  app.push()
-					}
-               }
+    }
 
-                 }
-
+    stage('build and push image') {
+      steps {
+          script  {
+                      app = docker.build("${authDockerImage}:${version}", ".")
+                      docker.withRegistry("${registryUrl}", "${registryCredential}") {
+                      pushOut =  app.push()
+                      }
               }
 
-      stage('deploy') {
+      }
+
+    }    
+
+    stage('deploy') {
       steps {
+            sh 'docker container rm -f $authServiceContainerName || true'
+            sh '''
+              docker container run -d  --network $NETWORK --name $authServiceContainerName \
+              -e EUREKA_HOST_ZONE=$eurekaHostZone \
+              -e MYSQL_URL=${MYSQL_URL}/security_db \
+              -e MYSQL_USER=$MYSQL_USER \
+              -e MYSQL_PASS=$MYSQL_PASS \
+              -e CONFIG_SERVER_URL=$configServerUrl \
+               $authDockerImage:${version} 
+            '''
+        }
+    }
+  }
+  }
 
-                                    sh 'chmod +x deploy.sh'
-                                    sh './deploy.sh prod ${version} ${registry}'
-                                   // sshagent(credentials: [serverCredential]) {
-                                    
-                                   //  }
-       }
-      }
-      }
-
-}
